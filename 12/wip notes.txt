@@ -1,0 +1,14 @@
+
+
+^\.*\?{n,}\.              ->  all options within the ?'s, continue trying if remaining has enough #? spaces
+^\.*\?{n-1,}\#\?{,n-1}    ->  all options before the #, or around the #, no continue
+^\.*\?{n,}\#              ->  all options before #, no continue
+
+on any options: check if remaining string has enough #? spaces
+
+X = ?#
+Y = ?. or end of string
+
+3
+.....XXXY>
+.....###.> => .>
