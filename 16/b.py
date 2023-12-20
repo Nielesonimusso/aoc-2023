@@ -152,6 +152,9 @@ with open("data.txt", "r") as file:
     maximum_energy = 0
     for starting_beam in chain(starting_top, starting_bottom, 
                                starting_left, starting_right):
+        beam_name = (f"{starting_beam.position.x}-".rjust(4, '0')+
+                     f"{starting_beam.position.y}-".rjust(4, '0')+
+                     f"{starting_beam.direction.value}")
         field = initial_field.copy()
         beams = [starting_beam]
         while len(beams) > 0:
@@ -171,7 +174,9 @@ with open("data.txt", "r") as file:
                 else:
                     remove_beams.append(beam)
             beams = [beam for beam in beams if beam not in remove_beams] + new_beams
-        maximum_energy = max(maximum_energy, len([tile for line in field for tile in line 
-               if tile not in list(energized.keys()) + ['a']]))
-        
+        energy = len([tile for line in field for tile in line 
+                      if tile not in list(energized.keys()) + ['a']])
+        maximum_energy = max(maximum_energy, energy)
+        with open(f"final_fields/{str(energy).rjust(4, '0')}_{beam_name}.txt", "w") as field_file:
+            field_file.writelines([line + "\n" for line in field])
     print(maximum_energy)
